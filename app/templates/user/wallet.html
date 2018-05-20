@@ -41,7 +41,16 @@
 
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-success">Add Funds</button>
+                                    <button type="button" action="{{ url_for('addFunds')}}" method="POST" class="btn btn-success">Add Funds</button>
+                                        <script
+                                            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                            data-key="{{ pub_key }}"
+                                            data-amount="500000"
+                                            data-name="QUICC Foods"
+                                            data-description="Widget"
+                                            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+                                            data-locale="auto">
+                                        </script>
                                 </div>
                             </div>
                             </div>

@@ -13,6 +13,11 @@ from models import *
 from bs4 import BeautifulSoup
 from image_getter import get_images
 import random, os, datetime, requests, urlparse
+import stripe
+
+pub_key = 'pk_test_ZiFwe4nz9E1qadhXHCOiylgj'
+secret_key = 'sk_test_x5mfe9BaXaNtFfZvNgRxZvsN'
+stripe.api_key = secret_key
 
 ###
 ### Routing for your application.
@@ -63,7 +68,21 @@ def restaurants():
 @app.route('/user/wallet')
 def userWallet():
     """Render the user's wallet page."""
-    return render_template('user/wallet.html')
+    return render_template('user/wallet.html', pub_key=pub_key)
+
+@app.route('/addFunds', methods=['POST'])
+def addFunds():
+    
+    customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
+
+    charge = stripe.Charge.create(
+        customer=customer.id,
+        amount=500000,
+        currency='jmd',
+        description='5000 eWallet Credits'
+    )
+
+    return redirect(url_for('thanks'))
 
 
 ###-----------------------------------  END OF USER API ROUTES  ---------------------------------------------###
