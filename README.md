@@ -1,2 +1,2 @@
-# capstone
-QICC Foods.
+# Capstone
+QUICC Foods
