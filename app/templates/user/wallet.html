@@ -16,46 +16,43 @@
                         <h5 class="">Your Balance: $0.00</h5>
                     
                         <br />
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                            Add Funds Here <i class="fas fa-camera-retro"></i>
+                        
+                        <button type="button" class="btn btn-primary">
+                            Add $500 JMD <i class="fas fa-camera-retro"></i>
                         </button>
 
+                        <button type="button" class="btn btn-primary">
+                            Add $1000 JMD <i class="fas fa-camera-retro"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-primary">
+                            Add $2500 JMD <i class="fas fa-camera-retro"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-primary">
+                            Add $5000 JMD <i class="fas fa-camera-retro"></i>
+                        </button>
+
+                        <button type="button" class="btn btn-primary">
+                            Add $10000 JMD <i class="fas fa-camera-retro"></i>
+                        </button>
+
+                        <form action="/addFunds/50000" method="POST">
+                            <article>
+                                <label>
+                                <span>Amount is $500.00</span>
+                                </label>
+                            </article>
+                        
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                    data-key="{{ key }}"
+                                    data-description="A Flask Charge"
+                                    data-amount="50000"
+                                    data-locale="auto"></script>
+                            </form>
+
                         <br />
-                        
-                        <!-- Modal -->
-                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Add Funds</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-
-                                <div class="modal-body">
-                                    Nigga this shit works
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" action="{{ url_for('addFunds')}}" method="POST" class="btn btn-success">Add Funds</button>
-                                        <script
-                                            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                            data-key="{{ pub_key }}"
-                                            data-amount="500000"
-                                            data-name="QUICC Foods"
-                                            data-description="Widget"
-                                            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                                            data-locale="auto">
-                                        </script>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        
+                                                
                     </div>
                             
                     

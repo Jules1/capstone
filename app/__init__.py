@@ -3,7 +3,19 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 
+import os
+import stripe
+
+
 app = Flask(__name__)
+
+app.config['stripe_keys'] = {
+    'secret_key': 'sk_test_x5mfe9BaXaNtFfZvNgRxZvsN',
+    'publishable_key': 'pk_test_ZiFwe4nz9E1qadhXHCOiylgj'
+}
+
+stripe.api_key = app.config['stripe_keys']
+
 app.config['SECRET_KEY'] = "3184cf50b884fd2828b2a084ac04d518f7c4f4e8f22f416a"
 # app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://info3180:password@localhost/project-2"
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://jqrggibohmdxak:dba53240a756e23bea6b448017b801467ffd707c25f1c45c94c5186f9bad464d@ec2-54-225-118-55.compute-1.amazonaws.com:5432/d96rrep6atbc84"

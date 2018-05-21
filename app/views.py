@@ -14,6 +14,9 @@ from bs4 import BeautifulSoup
 from image_getter import get_images
 import random, os, datetime, requests, urlparse
 import stripe
+from re import sub
+from decimal import Decimal
+
 
 pub_key = 'pk_test_ZiFwe4nz9E1qadhXHCOiylgj'
 secret_key = 'sk_test_x5mfe9BaXaNtFfZvNgRxZvsN'
@@ -68,21 +71,34 @@ def restaurants():
 @app.route('/user/wallet')
 def userWallet():
     """Render the user's wallet page."""
-    return render_template('user/wallet.html', pub_key=pub_key)
+    return render_template('user/wallet.html', key=app.config['stripe_keys']['publishable_key'])
 
-@app.route('/addFunds', methods=['POST'])
-def addFunds():
-    
-    customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
+# custamount variable added so if someone figures out how to implement other values
+# then the route is already set up and capable of accepting any values. Please
+# remember the amount must be in cents. So 50001 cents is $500.01 JMD and so on.
+@app.route('/addFunds/<custamount>', methods=['POST'])
+def addFunds(custamount):
+    # Amount in cents
+    amount = int(custamount)
+
+    customer = stripe.Customer.create(
+        email=request.form['stripeEmail'],
+        source=request.form['stripeToken']
+    )
 
     charge = stripe.Charge.create(
         customer=customer.id,
-        amount=500000,
+        amount=amount,
         currency='jmd',
-        description='5000 eWallet Credits'
+        description= '$'+ str(amount/100) + ' e-Wallet Credits'
     )
 
-    return redirect(url_for('thanks'))
+    flashMessage = '$' + str(amount/100) + ' was successfully added to your wallet'
+    flash(flashMessage, 'success')
+
+    # Returns user to same wallet page where they would be shown the updated wallet figure 
+    #once we implement the database backing it. They can also add more funds if they please as well.
+    return redirect(url_for('userWallet'))
 
 
 ###-----------------------------------  END OF USER API ROUTES  ---------------------------------------------###
