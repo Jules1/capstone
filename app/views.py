@@ -16,6 +16,7 @@ import random, os, datetime, requests, urlparse
 import stripe
 from re import sub
 from decimal import Decimal
+import csv
 
 
 pub_key = 'pk_test_ZiFwe4nz9E1qadhXHCOiylgj'
@@ -59,7 +60,17 @@ def terms():
 @app.route('/restaurants/')
 def restaurants():
     """Render the website's restaurants page."""
-    return render_template('restaurants.html')
+    return render_template('home.html')
+
+@app.route('/restaurants/<restaurantName>')
+def viewRestaurant(restaurantName):
+    """Render the website's restaurants page."""
+    # menuItems = None
+    menuItems = printMenuItems(restaurantName)
+    print menuItems
+    restaurantTitle = restaurantName.replace("-", " ").title()
+
+    return render_template('view_restaurant.html', restaurantTitle=restaurantTitle, menuItems=menuItems)
 
 # @app.route('/about/')
 # def about():
@@ -331,6 +342,19 @@ def validFileExtension(filename):
 def randomDefaultProfilePic():
     return "default/default-" + str(random.randint(1, 7)) + ".jpg"
 
+def printMenuItems(restuarantName):
+    menuItems = []
+    with open('app/Menu Items.csv', 'r') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        
+        csv_reader.next()
+        
+        for line in csv_reader:
+            if line[2] == restuarantName:
+                line[4] = line[4].replace(" ", " | ").title()
+                menuItems.append(line)
+    
+    return menuItems
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
@@ -355,6 +379,9 @@ def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
 
+@app.template_filter()
+def format_currency(value):
+    return "${:,.2f}".format(int(value))
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0",port="8080")
