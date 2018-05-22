@@ -67,10 +67,19 @@ def viewRestaurant(restaurantName):
     """Render the website's restaurants page."""
     # menuItems = None
     menuItems = printMenuItems(restaurantName)
-    print menuItems
     restaurantTitle = restaurantName.replace("-", " ").title()
 
     return render_template('view_restaurant.html', restaurantTitle=restaurantTitle, menuItems=menuItems)
+
+@app.route('/checkout/<id>/<qty>')
+def checkoutItem(id, qty):
+    """Render the website's restaurants page."""
+    # menuItems = None
+    menuItems = singleItemLookup(id)
+    menuItems[0][3] = int(menuItems[0][3])
+    restaurantTitle = menuItems[0][2].replace("-", " ").title()
+
+    return render_template('menu_item_checkout.html', key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty)
 
 # @app.route('/about/')
 # def about():
@@ -111,6 +120,29 @@ def addFunds(custamount):
     #once we implement the database backing it. They can also add more funds if they please as well.
     return redirect(url_for('userWallet'))
 
+@app.route('/charge/<custamount>/<redirectTo>', methods=['POST'])
+def charge(custamount, redirectTo):
+    # Amount in cents
+    amount = int(custamount)
+
+    customer = stripe.Customer.create(
+        email=request.form['stripeEmail'],
+        source=request.form['stripeToken']
+    )
+
+    charge = stripe.Charge.create(
+        customer=customer.id,
+        amount=amount,
+        currency='jmd',
+        description= '$'+ str(amount/100) + ' Charge from QUICC FOODS'
+    )
+
+    flashMessage = "Transaction successful. Your order's on the way!"
+    flash(flashMessage, 'success')
+
+    # Returns user to same wallet page where they would be shown the updated wallet figure 
+    #once we implement the database backing it. They can also add more funds if they please as well.
+    return redirect(url_for(redirectTo))
 
 ###-----------------------------------  END OF USER API ROUTES  ---------------------------------------------###
 
@@ -351,6 +383,20 @@ def printMenuItems(restuarantName):
         
         for line in csv_reader:
             if line[2] == restuarantName:
+                line[4] = line[4].replace(" ", " | ").title()
+                menuItems.append(line)
+    
+    return menuItems
+
+def singleItemLookup(id):
+    menuItems = []
+    with open('app/Menu Items.csv', 'r') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        
+        csv_reader.next()
+        
+        for line in csv_reader:
+            if line[0] == id:
                 line[4] = line[4].replace(" ", " | ").title()
                 menuItems.append(line)
     
