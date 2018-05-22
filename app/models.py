@@ -1,4 +1,5 @@
 from . import db, bcrypt
+from generate import *
 import datetime
 
 class UserProfile(db.Model):
@@ -8,20 +9,23 @@ class UserProfile(db.Model):
     username = db.Column(db.String(80))
     password = db.Column(db.String(255))
     age = db.Column(db.Integer)
-    bio = db.Column(db.String(140))
     gender = db.Column(db.String(10))
     tags = db.Column(db.String(255))
+    walletid = db.Column(db.String(30))
+    balance = db.Column(db.Float)
     datecreated = db.Column(db.DateTime)
 
-    def __init__(self, fName, lName, username, password, age, bio, gender, tags):
+
+    def __init__(self, fName, lName, username, password, age, gender, tags):
         self.first_name = fName
         self.last_name = lName
         self.username = username
         self.password = bcrypt.generate_password_hash(password) 
         self.age = age
-        self.bio = bio
         self.gender = gender
         self.tags = tags
+        self.walletid = generator()
+        self.balance = 0
         self.datecreated = datetime.datetime.now()
 
         # # Creates password for db storage
@@ -49,6 +53,8 @@ class UserProfile(db.Model):
 
     def __repr__(self):
         return '<User %r>' % (self.username)
+
+db.create_all()
 
 class WishlistItems(db.Model):
     id = db.Column(db.Integer, primary_key=True)

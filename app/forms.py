@@ -23,7 +23,6 @@ class CreateUserForm(FlaskForm):
     gender = SelectField('Gender', choices=[('none', '--select--'),('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')] )
     
     age = IntegerField('Age', validators=[validators.NumberRange(min=1, max=140)])
-    bio = StringField('(Optional) Profile Bio', validators=[validators.Length(min=0, max=140)])
 
     FormSubmitted = False
 

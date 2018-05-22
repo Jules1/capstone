@@ -4,7 +4,7 @@ Jinja2 Documentation:    http://jinja.pocoo.org/2/documentation/
 Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
-from app import app, db, login_manager, customer
+from app import app, db, login_manager
 from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.utils import secure_filename
@@ -214,13 +214,10 @@ def register():
 @app.route('/api/users/register', methods=["GET", "POST"])
 def register():
     """Accepts user information and saves it to the database."""
-    taglist = None
+    taglist = "rice"
     form = CreateUserForm()
     if request.method == "POST":
         form.FormSubmitted = True
-
-        if form.bio.data == "":
-            form.bio.data = app.config['DEFAULT_BIO']
                 
         tagskeeper=[]
         for x in range(0,16):
@@ -230,7 +227,7 @@ def register():
             if tag:
                 taglist = taglist + tag +" "
 
-        NewProfile = UserProfile(form.fName.data, form.lName.data, form.userName.data, form.password.data, form.age.data, form.bio.data, form.gender.data, taglist)
+        NewProfile = UserProfile(form.fName.data, form.lName.data, form.userName.data, form.password.data, form.age.data, form.gender.data, taglist)
 
         db.session.add(NewProfile)
         db.session.commit()
