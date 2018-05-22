@@ -13,23 +13,18 @@
                 
                 <div class="row">
                     <div class="col-6">
-                        <h5 class="">Your Items: {{ qty }} X {{ menuItems[0][1] }}</h5>
-                        <h5 class="">Your Total: {{ menuItems[0][3] | format_currency }}</h5>
+                        <h5 class="">Your Items: {{ qty }} x {{ menuItems[0][1] }}</h5>
+                        <h5 class="">Your Total: {{ total | format_currency }}</h5>
                     
                         <br />
                         
                         
-                        <form action="/charge/{{ menuItems[0][3] * 100 }}/home" method="POST">
-                            <article>
-                                <label>
-                                <span>Amount is {{ menuItems[0][3] | format_currency }}</span>
-                                </label>
-                            </article>
-                        
+                        <form action="/charge/{{ total*100 }}/home" method="POST">
+                                                    
                             <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                                     data-key="{{ key }}"
                                     data-description="A Flask Charge"
-                                    data-amount="{{ menuItems[0][3]*100 }}"
+                                    data-amount="{{ total*100 }}"
                                     data-locale="auto"></script>
                             </form>
 

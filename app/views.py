@@ -78,13 +78,15 @@ def checkoutItem(id, qty):
     menuItems = singleItemLookup(id)
     menuItems[0][3] = int(menuItems[0][3])
     restaurantTitle = menuItems[0][2].replace("-", " ").title()
+    total = menuItems[0][3] * int(qty)
 
-    return render_template('menu_item_checkout.html', key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty)
+    return render_template('menu_item_checkout.html', key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty, total=total)
 
 @app.route('/recommendations/')
 def recommendations():
     """Render the website's recommendations page."""
     recs = generaterecs()
+    print recs
     return render_template('recommendations.html', recommendations=recs)
 
 
