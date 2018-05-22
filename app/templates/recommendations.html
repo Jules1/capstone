@@ -5,10 +5,14 @@
     {% for i in recommendations %}
         <div class="col-12 col-sm-3">
             <div class="card cardSpacing restaurantCard">
+                    <img class="card-img-top img-fluid restaurantImage" src="{{ i['image'] }}">
                 <div class="card-body restaurantCardBody">
-                    <h4 class="card-title restaurantTitle">{{ i['name'] }}</h4>
+                    <h4 class="card-title restaurantTitle"><b>Sold at: </b>{{ i['place'] }}</h4>
+                    <p class="card-text restaurantType"><b>Item Name: </b>{{ i['name'] }}</p>
+                    <p class="card-text restaurantType"><b>Item Cost: </b>{{ i['cost'] }}</p>
+                    <p class="card-text restaurantType"><b>Recommendation level: </b>{{ i['rating'] }}</p>
                     <div class="text-center">
-                        <a href="/checkout/{{ i[0] }}/1" class="btn btn-primary restaurantButton">Add to Cart</a>
+                        <a href="/checkout/{{ i['cost'] }}" class="btn btn-primary restaurantButton">Add to Cart</a>
                     </div>
                 </div>
             </div>

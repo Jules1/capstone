@@ -82,16 +82,19 @@ def checkoutItem(id, qty):
 
     return render_template('menu_item_checkout.html', key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty, total=total)
 
-@app.route('/recommendations/')
-def recommendations():
+@app.route('/recommendations/<username>')
+@login_required
+def recommendations(username):
     """Render the website's recommendations page."""
-    recs = generaterecs()
-    print recs
+    user = UserProfile.query.filter_by(username=username).first()
+    tags = user.tags
+    recs = generaterecs(tags)
     return render_template('recommendations.html', recommendations=recs)
 
 
 ###----------------------------------- START OF USER API ROUTES ---------------------------------------------###
 @app.route('/user/wallet')
+@login_required
 def userWallet():
     """Render the user's wallet page."""
     return render_template('user/wallet.html', key=app.config['stripe_keys']['publishable_key'])
