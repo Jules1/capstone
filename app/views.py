@@ -62,6 +62,11 @@ def restaurants():
     """Render the website's restaurants page."""
     return render_template('restaurants.html')
 
+@app.route('/driver')
+def driver():
+    """Render the website's restaurants page."""
+    return render_template('Driver.html')
+
 @app.route('/restaurants/<restaurantName>')
 def viewRestaurant(restaurantName):
     """Render the website's restaurants page."""
