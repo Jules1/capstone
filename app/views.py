@@ -88,23 +88,51 @@ def checkoutItem(id, qty):
 
     return render_template('menu_item_checkout.html', user=user, key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty, total=total)
 
-@app.route('/recommendations/<username>')
+@app.route('/recommendations/')
 @login_required
-def recommendations(username):
+def recommendations():
     """Render the website's recommendations page."""
-    user = UserProfile.query.filter_by(username=username).first()
+    # user = UserProfile.query.filter_by(id=current_user.get_id()).first_or_404()
+    user = UserProfile.query.filter_by(id=current_user.get_id()).first_or_404()
     tags = user.tags
     recs = generaterecs(tags)
+    print recs
     return render_template('recommendations.html', recommendations=recs)
 
 
 ###----------------------------------- START OF USER API ROUTES ---------------------------------------------###
-@app.route('/user/wallet')
+@app.route('/user/charge-wallet/<amount>')
 @login_required
-def userWallet():
+def userChargeWallet(amount=50000):
     """Render the user's wallet page."""
     user = UserProfile.query.filter_by(id=current_user.get_id()).first_or_404()
-    return render_template('user/wallet.html', user=user, key=app.config['stripe_keys']['publishable_key'])
+    return render_template('user/chargewallet.html', amountInDollars=int(amount)/100, amount=amount, user=user, key=app.config['stripe_keys']['publishable_key'])
+
+@app.route('/user/wallet/')
+@login_required
+def userWallet(amount=50000):
+    """Render the user's wallet page."""
+    user = UserProfile.query.filter_by(id=current_user.get_id()).first_or_404()
+    return render_template('user/wallet.html', amountInDollars=int(amount)/100, amount=amount, user=user, key=app.config['stripe_keys']['publishable_key'])
+
+@app.route('/subtractFunds/<custamount>', methods=['GET'])
+@login_required
+def subtractFunds(custamount):
+    # Amount in cents
+    amount = int(custamount)/100
+
+    user = UserProfile.query.filter_by(id=current_user.get_id()).first_or_404()
+    user.balance -= amount
+
+    db.session.add(user)
+    db.session.commit()
+
+    flashMessage = '$' + str(amount) + ' was successfully charged from your wallet'
+    flash(flashMessage, 'success')
+    
+    # Returns user to same wallet page where they would be shown the updated wallet figure 
+    #once we implement the database backing it. They can also add more funds if they please as well.
+    return redirect(url_for('home'))
 
 # custamount variable added so if someone figures out how to implement other values
 # then the route is already set up and capable of accepting any values. Please
@@ -126,12 +154,18 @@ def addFunds(custamount):
         description= '$'+ str(amount/100) + ' e-Wallet Credits'
     )
 
+    user = UserProfile.query.filter_by(id=current_user.get_id()).first_or_404()
+    user.balance += int(custamount)/100
+
+    db.session.add(user)
+    db.session.commit()
+
     flashMessage = '$' + str(amount/100) + ' was successfully added to your wallet'
     flash(flashMessage, 'success')
-
+    
     # Returns user to same wallet page where they would be shown the updated wallet figure 
     #once we implement the database backing it. They can also add more funds if they please as well.
-    return redirect(url_for('userWallet'))
+    return redirect(url_for('userWallet', amount=50000))
 
 @app.route('/charge/<custamount>/<redirectTo>', methods=['POST'])
 def charge(custamount, redirectTo):

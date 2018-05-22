@@ -16,11 +16,21 @@
                         <h5 class="">Your Balance: {{ user.balance | format_currency }}</h5>
                     
                         <br />
-                        <a href="/user/charge-wallet/50000" class="btn btn-primary restaurantButton">Add $500 JMD to Wallet</a>
-                        <a href="/user/charge-wallet/100000" class="btn btn-primary restaurantButton">Add $1000 JMD to Wallet</a>
-                        <a href="/user/charge-wallet/250000" class="btn btn-primary restaurantButton">Add $2500 JMD to Wallet</a>
-                        <a href="/user/charge-wallet/500000" class="btn btn-primary restaurantButton">Add $5000 JMD to Wallet</a>
-                        <a href="/user/charge-wallet/1000000" class="btn btn-primary restaurantButton">Add $10000 JMD to Wallet</a>    
+                        
+                        <form action="/addFunds/{{ amount }}" method="POST">
+                            <article>
+                                <label>
+                                <span>Amount to add: {{ amountInDollars | format_currency}}</span>
+                                </label>
+                            </article>
+                        
+                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                                    data-key="{{ key }}"
+                                    data-description="${{ amountInDollars | format_currency }} Ewallet Charge"
+                                    data-amount="{{ amount }}"
+                                    data-locale="auto"></script>
+                            </form>
+
                         <br />
                                                 
                     </div>

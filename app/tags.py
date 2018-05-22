@@ -7,7 +7,7 @@ import os
 def compare(foodtags, usertags):
     result={}
     tcount = 0
-    tags = foodtags[3].split(" ")
+    tags = foodtags[4].split(" ")
     tags2 = usertags.split(" ")
     """checking correlation with user tags"""
     if (tags[0] in tags2):
@@ -26,16 +26,16 @@ def compare(foodtags, usertags):
         tcount +=0
 
     if (tcount == 3):
-        result = {'name':foodtags[0], 'place':foodtags[1],'cost':foodtags[2],'image':foodtags[4], 'rating': 3}
+        result = {'id':foodtags[0], 'name':foodtags[1], 'place':foodtags[2],'cost':foodtags[3],'image':foodtags[5], 'rating': 3}
         
     if (tcount == 2):
-        result = {'name':foodtags[0], 'place':foodtags[1],'cost':foodtags[2],'image':foodtags[4] ,'rating': 2}
+        result = {'id':foodtags[0], 'name':foodtags[1], 'place':foodtags[2],'cost':foodtags[3],'image':foodtags[5] ,'rating': 2}
         
     if (tcount == 1):
-        result = {'name':foodtags[0], 'place':foodtags[1],'cost':foodtags[2],'image':foodtags[4], 'rating': 1}
+        result = {'id':foodtags[0], 'name':foodtags[1], 'place':foodtags[2],'cost':foodtags[3],'image':foodtags[5], 'rating': 1}
 
     if (tcount < 1):
-        result = {'name':foodtags[0], 'place':foodtags[1],'cost':foodtags[2],'image':foodtags[4], 'rating': 0}
+        result = {'id':foodtags[0], 'name':foodtags[1], 'place':foodtags[2],'cost':foodtags[3],'image':foodtags[5], 'rating': 0}
 
     
     return result
@@ -48,7 +48,7 @@ def generaterecs(tags):
         next(csv_reader)
         for row in csv_reader:
             '''results = compare(row[4:], tags)'''
-            results = compare(row[1:], tags)
+            results = compare(row, tags)
             recs.append(results)
         
     csvfile.close()

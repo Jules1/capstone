@@ -20,18 +20,17 @@
                         <br />
                         
                     {% if user.balance >= total %}
-                        <form action="/charge/{{ total*100 }}/home" method="POST">
-                                                    
-                            <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                                    data-key="{{ key }}"
-                                    data-description="A Flask Charge"
-                                    data-amount="{{ total*100 }}"
-                                    data-locale="auto"></script>
-                            </form>
+                        <a href="/subtractFunds/{{ total*100 }}" class="btn btn-primary restaurantButton">Pay with E-Wallet</a>
                     {% else %}
                     <div class="">
                         <h4>Insufficient wallet balance. Please add funds to your wallet to continue transaction.</h4>
-                        <a href="/user/wallet" class="btn btn-primary restaurantButton">Add Funds to Wallet</a>
+                        <a href="/user/charge-wallet/50000" class="btn btn-primary restaurantButton">Add $500 JMD to Wallet</a>
+                        <a href="/user/charge-wallet/100000" class="btn btn-primary restaurantButton">Add $1000 JMD to Wallet</a>
+                        <a href="/user/charge-wallet/250000" class="btn btn-primary restaurantButton">Add $2500 JMD to Wallet</a>
+                        <a href="/user/charge-wallet/500000" class="btn btn-primary restaurantButton">Add $5000 JMD to Wallet</a>
+                        <a href="/user/charge-wallet/1000000" class="btn btn-primary restaurantButton">Add $10000 JMD to Wallet</a>
+                        
+                        
                     </div>
                     {% endif %}
                         <br />
