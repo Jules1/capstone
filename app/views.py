@@ -16,11 +16,7 @@ import random, os, datetime, requests, urlparse
 import stripe
 from re import sub
 from decimal import Decimal
-<<<<<<< HEAD
 from tags import *
-=======
-import csv
->>>>>>> 5d3cdf6fd19e497982783ea6fccd25d49aa65184
 
 
 pub_key = 'pk_test_ZiFwe4nz9E1qadhXHCOiylgj'
