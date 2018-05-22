@@ -9,6 +9,11 @@ import stripe
 
 app = Flask(__name__)
 
+app.config['SECRET_KEY'] = '348032348643'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/customer.db'
+app.config['SQLALCHEMY_ECHO'] = True
+db = SQLAlchemy(app)
+
 app.config['stripe_keys'] = {
     'secret_key': 'sk_test_x5mfe9BaXaNtFfZvNgRxZvsN',
     'publishable_key': 'pk_test_ZiFwe4nz9E1qadhXHCOiylgj'
@@ -33,5 +38,18 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+#SQLite 
+class customer(db.Model):
+    id = db.Column(db.Integer, primary_key="True")
+    walletID = db.Column(db.String(30))
+    custName = db.Column(db.String(30))
+    tags = db.Column(db.String(30))
+    location = db.Column(db.String(30)) #
+    balance = db.Column(db.Float)
+db.create_all()
+
+
 app.config.from_object(__name__)
 from app import views
+
+
