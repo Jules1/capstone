@@ -10,10 +10,10 @@ class UserProfile(db.Model):
     age = db.Column(db.Integer)
     bio = db.Column(db.String(140))
     gender = db.Column(db.String(10))
-    image = db.Column(db.String(255))
+    tags = db.Column(db.String(255))
     datecreated = db.Column(db.DateTime)
 
-    def __init__(self, fName, lName, username, password, age, bio, gender, image):
+    def __init__(self, fName, lName, username, password, age, bio, gender, tags):
         self.first_name = fName
         self.last_name = lName
         self.username = username
@@ -21,16 +21,16 @@ class UserProfile(db.Model):
         self.age = age
         self.bio = bio
         self.gender = gender
-        self.image = image
+        self.tags = tags
         self.datecreated = datetime.datetime.now()
 
         # # Creates password for db storage
-        # pw_hash = bcrypt.generate_password_hash('hunter2')
-        # bcryptHash.check_password_hash(pw_hash, 'hunter2') # returns True
+        pw_hash = bcrypt.generate_password_hash('hunter2')
+        bcryptHash.check_password_hash(pw_hash, 'hunter2') # returns True
 
         # # Check Password for login
-        # candidate = 'secret'
-        # bcrypt.check_password_hash(pw_hash, candidate)
+        candidate = 'secret'
+        bcrypt.check_password_hash(pw_hash, candidate)
 
     def is_authenticated(self):
         return True

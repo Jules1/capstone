@@ -18,8 +18,7 @@ class CreateUserForm(FlaskForm):
         validators.DataRequired(),
         validators.Length(max=70),
         validators.EqualTo('password', message='Passwords must match')])
-    
-    imgfile = FileField('(Optional) Upload a Profile Picture')
+
     
     gender = SelectField('Gender', choices=[('none', '--select--'),('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')] )
     
