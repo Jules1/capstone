@@ -150,9 +150,9 @@ def charge(custamount, redirectTo):
 ###-----------------------------------  END OF USER API ROUTES  ---------------------------------------------###
 
 ###----------------------------------- START OF SPECIFIED API ROUTES ---------------------------------------------###
-@app.route('/api/users/register', methods=["GET", "POST"])
+##############################################################################################################
+"""@app.route('/api/users/register', methods=["GET", "POST"])
 def register():
-    """Accepts user information and saves it to the database."""
     form = CreateUserForm()
     if request.method == "POST":
         form.FormSubmitted = True
@@ -160,22 +160,42 @@ def register():
         if form.validate_on_submit():            
             if validFileExtension(request.files['imgfile'].filename):
                 file_folder = app.config['UPLOAD_FOLDER']
-
-                # Assigns 1 of 7 default profile pics if the user has not uploaded one
-                if request.files['imgfile'].filename != "":
-                    file = request.files['imgfile']
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(file_folder, filename))
-                else:
-                    filename = randomDefaultProfilePic()
                 
                 # Assigns the default bio if the user has not uploaded one
                 if form.bio.data == "":
                     form.bio.data = app.config['DEFAULT_BIO']
+                
+                tag1 = request.form.get('inlineCheckbox1')
+                tag2 = request.form.get('inlineCheckbox2')
+                tag3 = request.form.get('inlineCheckbox3')
+                tag4 = request.form.get('inlineCheckbox4')
+                tag5 = request.form.get('inlineCheckbox5')
+                tag6 = request.form.get('inlineCheckbox6')
+                tag7 = request.form.get('inlineCheckbox7')
+                tag8 = request.form.get('inlineCheckbox8')
+                tag9 = request.form.get('inlineCheckbox9')
+                tag10 = request.form.get('inlineCheckbox10')
+                tag11 = request.form.get('inlineCheckbox11')
+                tag12 = request.form.get('inlineCheckbox12')
+                tag13 = request.form.get('inlineCheckbox13')
+                tag14 = request.form.get('inlineCheckbox14')
+                tag15 = request.form.get('inlineCheckbox15')
+                tag16 = request.form.get('inlineCheckbox16')
+
+                
+                tagskeeper=[]
+                for x in range(0,16):
+                    tagskeeper.append(request.form.get('inlineCheckbox'+x))
+                
+                for tag in tagskeeper:
+                    if tag:
+                        taglist = taglist + tag +" "
+
+
 
                 NewProfile = UserProfile(form.fName.data, form.lName.data, form.userName.data, 
                                          form.password.data, form.age.data, form.bio.data,
-                                         form.gender.data, filename)
+                                         form.gender.data, taglist)
 
                 db.session.add(NewProfile)
                 db.session.commit()
@@ -187,7 +207,40 @@ def register():
             else:
                 form.imgfile.errors.append("Invalid image file uploaded")
 
+    return render_template('register.html',form=form)"""
+
+########################################################################
+
+@app.route('/api/users/register', methods=["GET", "POST"])
+def register():
+    """Accepts user information and saves it to the database."""
+    taglist = None
+    form = CreateUserForm()
+    if request.method == "POST":
+        form.FormSubmitted = True
+
+        if form.bio.data == "":
+            form.bio.data = app.config['DEFAULT_BIO']
+                
+        tagskeeper=[]
+        for x in range(0,16):
+            tagskeeper.append(request.form.get('inlineCheckbox'+str(x)))
+        
+        for tag in tagskeeper:
+            if tag:
+                taglist = taglist + tag +" "
+
+        NewProfile = UserProfile(form.fName.data, form.lName.data, form.userName.data, form.password.data, form.age.data, form.bio.data, form.gender.data, taglist)
+
+        db.session.add(NewProfile)
+        db.session.commit()
+
+        flash('Profile created and successfully saved', 'success')
+        login_user(NewProfile)
+        return redirect(url_for('profile'))
     return render_template('register.html',form=form)
+
+########################################################################
 
 
 @app.route('/api/users/login', methods=["GET", "POST"])

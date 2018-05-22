@@ -31,7 +31,7 @@ DEFAULT_BIO = 'This person has not entered a bio.'
 
 
 db = SQLAlchemy(app)
-bcryptHash = Bcrypt(app)
+bcrypt = Bcrypt(app)
 
 # Flask-Login login manager
 login_manager = LoginManager()

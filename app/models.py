@@ -1,4 +1,4 @@
-from . import db, bcryptHash
+from . import db, bcrypt
 import datetime
 
 class UserProfile(db.Model):
@@ -17,7 +17,7 @@ class UserProfile(db.Model):
         self.first_name = fName
         self.last_name = lName
         self.username = username
-        self.password = bcryptHash.generate_password_hash(password) 
+        self.password = bcrypt.generate_password_hash(password) 
         self.age = age
         self.bio = bio
         self.gender = gender
@@ -25,8 +25,8 @@ class UserProfile(db.Model):
         self.datecreated = datetime.datetime.now()
 
         # # Creates password for db storage
-        pw_hash = bcrypt.generate_password_hash('hunter2')
-        bcryptHash.check_password_hash(pw_hash, 'hunter2') # returns True
+        pw_hash = bcrypt.generate_password_hash('nanibois')
+        bcrypt.check_password_hash(pw_hash, 'nanibois') # returns True
 
         # # Check Password for login
         candidate = 'secret'
