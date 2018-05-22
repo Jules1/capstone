@@ -9,11 +9,11 @@
         <div class="card cardSpacing">
             <div class="card-body">
                 
-                <h4 class="card-title">Wallet Code: AAH352</h4>
+                <h4 class="card-title">Wallet Code: {{ user.walletid }}</h4>
                 
                 <div class="row">
                     <div class="col-6">
-                        <h5 class="">Your Balance: $0.00</h5>
+                        <h5 class="">Your Balance: {{ user.balance | format_currency }}</h5>
                     
                         <br />
                         

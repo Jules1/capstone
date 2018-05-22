@@ -80,12 +80,13 @@ def viewRestaurant(restaurantName):
 def checkoutItem(id, qty):
     """Render the website's restaurants page."""
     # menuItems = None
+    user = UserProfile.query.filter_by(id=current_user.get_id()).first_or_404()
     menuItems = singleItemLookup(id)
     menuItems[0][3] = int(menuItems[0][3])
     restaurantTitle = menuItems[0][2].replace("-", " ").title()
     total = menuItems[0][3] * int(qty)
 
-    return render_template('menu_item_checkout.html', key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty, total=total)
+    return render_template('menu_item_checkout.html', user=user, key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty, total=total)
 
 @app.route('/recommendations/<username>')
 @login_required
@@ -102,7 +103,8 @@ def recommendations(username):
 @login_required
 def userWallet():
     """Render the user's wallet page."""
-    return render_template('user/wallet.html', key=app.config['stripe_keys']['publishable_key'])
+    user = UserProfile.query.filter_by(id=current_user.get_id()).first_or_404()
+    return render_template('user/wallet.html', user=user, key=app.config['stripe_keys']['publishable_key'])
 
 # custamount variable added so if someone figures out how to implement other values
 # then the route is already set up and capable of accepting any values. Please
