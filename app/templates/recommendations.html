@@ -1,6 +1,31 @@
 {% extends "base.html" %}
 {% block main %}
 
-<p>The page works</p>>
+{% if recommendations %}
+    {% for i in recommendations %}
+        <div class="col-12 col-sm-3">
+            <div class="card cardSpacing restaurantCard">
+                <div class="card-body restaurantCardBody">
+                    <h4 class="card-title restaurantTitle">{{ i['name'] }}</h4>
+                    <div class="text-center">
+                        <a href="/checkout/{{ i[0] }}/1" class="btn btn-primary restaurantButton">Add to Cart</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% else %}
+        <div class="col-12">
+            <div class="card cardSpacing text-center">
+                <div class="card-body">
+                    <h4 class="card-title">No Items Found</h4>
+                    <p class="card-text">
+                        
+                    </p>
+                </div>
+            </div>
+        </div>
+{% endif %}
 
 {% endblock %}

@@ -38,34 +38,20 @@ def compare(foodtags, usertags):
     
     return result
 
-"""def generaterecs():
-    usertags = ['rice','chicken','jerk','beef','spicy','salad']
-    recs = []
-    with open('usertags.csv','rd') as csvfile:
-        csv_reader = csv.reader(csvfile, delimiter=',')
-        next(csv_reader)
-        for row in csv_reader:
-            results = compare(row[2:], usertags)
-            recs.append(results)
-    csvfile.close()
-    return (recs)"""
-
 def generaterecs():
     usertags = ['rice','chicken','jerk','beef','spicy','salad']
     recs = []
-    with open(os.path.join(os.path.dirname(__file__),'usertags.csv'),'rd') as csvfile:
+    with open('app/usertags.csv','r') as csvfile:
         csv_reader = csv.reader(csvfile, delimiter=',')
         next(csv_reader)
         for row in csv_reader:
-            """print(row)"""
             results = compare(row[2:], usertags)
-            """print(res)"""
             recs.append(results)
     csvfile.close()
-    return (recs)
+    return recs
 
 
 """if __name__ == '__main__':
     x = generaterecs()
-    print(x)"""
+    print(x[1]['name'])"""
 

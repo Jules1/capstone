@@ -85,10 +85,7 @@ def checkoutItem(id, qty):
 def recommendations():
     """Render the website's recommendations page."""
     recs = generaterecs()
-
-    
-
-    return render_template('recommendations.html')
+    return render_template('recommendations.html', recommendations=recs)
 
 
 ###----------------------------------- START OF USER API ROUTES ---------------------------------------------###
