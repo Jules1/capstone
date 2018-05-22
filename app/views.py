@@ -260,7 +260,7 @@ def login():
             # Fails if username doesn't exist 
             if user is not None: 
                 # Compares Bcrypt hash to see if password is correct
-                if (bcryptHash.check_password_hash(user.password, password)):
+                if (bcrypt.check_password_hash(user.password, password)):
                     login_user(user)
                     flash('Logged in successfully.', 'success')
                     next = request.args.get('next')
