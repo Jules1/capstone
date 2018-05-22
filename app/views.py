@@ -16,7 +16,11 @@ import random, os, datetime, requests, urlparse
 import stripe
 from re import sub
 from decimal import Decimal
+<<<<<<< HEAD
+from tags import *
+=======
 import csv
+>>>>>>> 5d3cdf6fd19e497982783ea6fccd25d49aa65184
 
 
 pub_key = 'pk_test_ZiFwe4nz9E1qadhXHCOiylgj'
@@ -81,10 +85,14 @@ def checkoutItem(id, qty):
 
     return render_template('menu_item_checkout.html', key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty)
 
-# @app.route('/about/')
-# def about():
-#     """Render the website's about page."""
-#     return render_template('about.html')
+@app.route('/recommendations/')
+def recommendations():
+    """Render the website's recommendations page."""
+    recs = generaterecs()
+
+    
+
+    return render_template('recommendations.html')
 
 
 ###----------------------------------- START OF USER API ROUTES ---------------------------------------------###
@@ -222,7 +230,7 @@ def logout():
     logout_user()
     flash('Logged out successfully.', 'success')
     return redirect(url_for('home'))
-
+###################### wish list bullshit #########################
 @app.route('/api/users/<userid>/wishlist', methods=["POST"])
 def addItem(userid):
     """Used for adding items to the wishlist"""
