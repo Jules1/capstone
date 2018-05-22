@@ -224,18 +224,20 @@ def register():
 @app.route('/api/users/register', methods=["GET", "POST"])
 def register():
     """Accepts user information and saves it to the database."""
-    taglist = "rice"
+    taglist = ""
     form = CreateUserForm()
     if request.method == "POST":
         form.FormSubmitted = True
                 
-        tagskeeper=[]
-        for x in range(0,16):
-            tagskeeper.append(request.form.get('inlineCheckbox'+str(x)))
+        tagskeeper=request.form.getlist('tags')
+        # for x in range(0,16):
+        #     tagskeeper.append(request.form.getlist('inlineCheckbox'))
         
+        # print(request.form.getlist('tags'))
+        # print tagskeeper
         for tag in tagskeeper:
             if tag:
-                taglist = taglist + tag +" "
+                taglist += tag + " "
 
         NewProfile = UserProfile(form.fName.data, form.lName.data, form.userName.data, form.password.data, form.age.data, form.gender.data, taglist)
 
