@@ -60,7 +60,7 @@ def terms():
 @app.route('/restaurants/')
 def restaurants():
     """Render the website's restaurants page."""
-    return render_template('home.html')
+    return render_template('restaurants.html')
 
 @app.route('/restaurants/<restaurantName>')
 def viewRestaurant(restaurantName):
