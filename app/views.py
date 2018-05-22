@@ -16,7 +16,11 @@ import random, os, datetime, requests, urlparse
 import stripe
 from re import sub
 from decimal import Decimal
+<<<<<<< HEAD
 from tags import *
+=======
+import csv
+>>>>>>> 5d3cdf6fd19e497982783ea6fccd25d49aa65184
 
 
 pub_key = 'pk_test_ZiFwe4nz9E1qadhXHCOiylgj'
@@ -60,7 +64,26 @@ def terms():
 @app.route('/restaurants/')
 def restaurants():
     """Render the website's restaurants page."""
-    return render_template('restaurants.html')
+    return render_template('home.html')
+
+@app.route('/restaurants/<restaurantName>')
+def viewRestaurant(restaurantName):
+    """Render the website's restaurants page."""
+    # menuItems = None
+    menuItems = printMenuItems(restaurantName)
+    restaurantTitle = restaurantName.replace("-", " ").title()
+
+    return render_template('view_restaurant.html', restaurantTitle=restaurantTitle, menuItems=menuItems)
+
+@app.route('/checkout/<id>/<qty>')
+def checkoutItem(id, qty):
+    """Render the website's restaurants page."""
+    # menuItems = None
+    menuItems = singleItemLookup(id)
+    menuItems[0][3] = int(menuItems[0][3])
+    restaurantTitle = menuItems[0][2].replace("-", " ").title()
+
+    return render_template('menu_item_checkout.html', key=app.config['stripe_keys']['publishable_key'], menuItems=menuItems, qty=qty)
 
 @app.route('/recommendations/')
 def recommendations():
@@ -105,6 +128,29 @@ def addFunds(custamount):
     #once we implement the database backing it. They can also add more funds if they please as well.
     return redirect(url_for('userWallet'))
 
+@app.route('/charge/<custamount>/<redirectTo>', methods=['POST'])
+def charge(custamount, redirectTo):
+    # Amount in cents
+    amount = int(custamount)
+
+    customer = stripe.Customer.create(
+        email=request.form['stripeEmail'],
+        source=request.form['stripeToken']
+    )
+
+    charge = stripe.Charge.create(
+        customer=customer.id,
+        amount=amount,
+        currency='jmd',
+        description= '$'+ str(amount/100) + ' Charge from QUICC FOODS'
+    )
+
+    flashMessage = "Transaction successful. Your order's on the way!"
+    flash(flashMessage, 'success')
+
+    # Returns user to same wallet page where they would be shown the updated wallet figure 
+    #once we implement the database backing it. They can also add more funds if they please as well.
+    return redirect(url_for(redirectTo))
 
 ###-----------------------------------  END OF USER API ROUTES  ---------------------------------------------###
 
@@ -336,6 +382,33 @@ def validFileExtension(filename):
 def randomDefaultProfilePic():
     return "default/default-" + str(random.randint(1, 7)) + ".jpg"
 
+def printMenuItems(restuarantName):
+    menuItems = []
+    with open('app/Menu Items.csv', 'r') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        
+        csv_reader.next()
+        
+        for line in csv_reader:
+            if line[2] == restuarantName:
+                line[4] = line[4].replace(" ", " | ").title()
+                menuItems.append(line)
+    
+    return menuItems
+
+def singleItemLookup(id):
+    menuItems = []
+    with open('app/Menu Items.csv', 'r') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        
+        csv_reader.next()
+        
+        for line in csv_reader:
+            if line[0] == id:
+                line[4] = line[4].replace(" ", " | ").title()
+                menuItems.append(line)
+    
+    return menuItems
 
 @app.route('/<file_name>.txt')
 def send_text_file(file_name):
@@ -360,6 +433,9 @@ def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
 
+@app.template_filter()
+def format_currency(value):
+    return "${:,.2f}".format(int(value))
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0",port="8080")
