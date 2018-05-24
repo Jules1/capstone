@@ -158,7 +158,69 @@ a.navbar-brand {
     padding-bottom: 50px;
 }
 
-.howItWorks {
-    height: 250px;
+@media (min-width: 768px) {
+    .howItWorks {
+        height: 250px;
+    }
 }
+
 /* ==================== COMMON PAGE STYLES ==================== */
+
+.pageHeader {
+  background: url('../img/BG3.jpg') no-repeat center center; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+  height: 95vh;
+  margin-top: -25px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pageHeaderContents {
+    color: white;
+    background-color: #1d1d1d;
+    opacity: 0.9;
+    padding: 25px;
+    border-radius: 25px;
+}
+
+.sectionCover {
+    /* height: 100vh; */
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+  
+.sectionCoverContents {
+    color: white;
+}
+
+.appSection {
+    background-color: #26a1e0;
+}
+
+.app-image {
+    width: auto;
+    height: 500px;
+}
+
+.section-title {
+    padding-top: 25px;
+    padding-bottom: 25px;
+
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+  

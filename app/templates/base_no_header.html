@@ -23,16 +23,8 @@
     </header>
 
     <main>
-        <div class="container">
-            {% include 'flash_messages.html' %} 
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="display-3 text-center pageTitle">{% block mainTitle %}QUICC FOODS{% endblock%}</h1>
-                </div>
-            {% block main %}                
-            {% endblock %}
-            </div>
-        </div>
+        {% block main %}                
+        {% endblock %}
     </main>
 
     <footer>
