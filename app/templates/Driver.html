@@ -3,7 +3,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
     
-        <title>{% block pageTitle %}QUICC FOODS{% endblock%}</title>
+        <title>driver interface</title>
     
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     
@@ -11,7 +11,8 @@
         <link rel="stylesheet" href="/static/css/lib/fontawesome-all.min.css">
     
         <link rel="stylesheet" href="/static/css/mainstyle.css"> 
-        {% block css %} {% endblock%}
+        <script src="static/js/drivermap.js"></script>
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTBjKacwVrHHDJrtvMqSO5CBhpWwOOYwg" type="text/javascript"></script>
     </head>
     
     <body class="">
@@ -23,11 +24,14 @@
             <div class="container">
                 {% include 'flash_messages.html' %} 
                 <div class="row">
-                    <div class="col-12">
-                        <h1 class="display-3 text-center pageTitle">{% block mainTitle %}QUICC FOODS{% endblock%}</h1>
+
+                    <div id="mapholder">
+
                     </div>
-                {% block main %}                
-                {% endblock %}
+                    <div id="error">
+
+                    </div>
+
                 </div>
             </div>
         </main>
@@ -42,14 +46,9 @@
     
         <script src="/static/js/lib/jquery-3.3.1.min.js"></script>
         <script src="/static/js/lib/popper.min.js"></script>
-        <script src="/static/js/lib/bootstrap.min.js"></script> 
+        <script src="/static/js/lib/bootstrap.min.js"></script>
         {% block js %}{% endblock%}
     </body>
     </html>
-<div id="mapholder">
 
-</div>
-<div id="error">
 
-<script src="static/js/locationjs.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTBjKacwVrHHDJrtvMqSO5CBhpWwOOYwg" type="text/javascript"></script>
